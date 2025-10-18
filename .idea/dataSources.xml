@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="hackathon_db_hqjf@dpg-d3pp4te3jp1c7384nri0-a.frankfurt-postgres.render.com" uuid="eceb9af2-ea3e-4947-bc39-db2fe5651072">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://dpg-d3pp4te3jp1c7384nri0-a.frankfurt-postgres.render.com:5432/hackathon_db_hqjf</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>

@@ -28,13 +28,7 @@ func SetupRoutes(e *echo.Echo, service services.Service) {
 	// Initialize handlers
 	handler := handlers.NewHandler(service)
 
-	v1.POST("/request", handler.LlmRequest)
-	// User routes
-	users := v1.Group("/users")
-	users.POST("", handler.CreateUser)
-	users.GET("", handler.ListUsers)
-	users.GET("/:id", handler.GetUser)
-	users.PUT("/:id", handler.UpdateUser)
-	users.DELETE("/:id", handler.DeleteUser)
+	v1.GET("/get-chat/:id", handler.GetChatByID)
+	v1.POST("/llm-prompt/:id", handler.LLMChat)
 
 }

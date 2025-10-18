@@ -1,21 +1,25 @@
 -- Create users table
-CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    email VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS chats (
+                                     id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                                     title      TEXT,
+                                     model      TEXT NOT NULL,                  -- e.g. "gpt-4o-mini"
+                                     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- Create index on email for faster lookups
-CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+INSERT INTO chats (id, title, model) VALUES
+                                         ('1719e433-4215-4450-9a72-ae2ec5956224', 'Sample chat', 'gpt-4o-mini');
 
--- Create index on created_at for faster sorting
-CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
 
--- Insert some sample data for development
-INSERT INTO users (id, email, name, created_at, updated_at) VALUES
-    ('550e8400-e29b-41d4-a716-446655440000', 'john.doe@example.com', 'John Doe', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440001', 'jane.smith@example.com', 'Jane Smith', NOW(), NOW()),
-    ('550e8400-e29b-41d4-a716-446655440002', 'bob.wilson@example.com', 'Bob Wilson', NOW(), NOW())
-ON CONFLICT (email) DO NOTHING;
+CREATE TABLE IF NOT EXISTS messages (
+                                        id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                                        chat_id    UUID NOT NULL REFERENCES chats(id) ON DELETE CASCADE,
+                                        role       VARCHAR(32) NOT NULL,           -- 'user' | 'assistant' | 'system' (if you ever need it)
+                                        content    TEXT NOT NULL,
+                                        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+INSERT INTO messages (chat_id, role, content) VALUES
+                                                         ('1719e433-4215-4450-9a72-ae2ec5956224', 'user',
+                                                          'Hello, how are you?'),
+                                                         ('1719e433-4215-4450-9a72-ae2ec5956224', 'assistant',
+                                                          'Im just a computer program, but Im here and ready to help you! How can I assist you today?');
