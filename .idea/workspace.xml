@@ -4,22 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2d7070a4-271b-4173-9dc4-5e51e31dd180" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/handlers/handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/llm.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repositories/repository.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/connection.go" beforeDir="false" afterPath="$PROJECT_DIR$/database/connection.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env.example" beforeDir="false" afterPath="$PROJECT_DIR$/env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handlers/user_handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/repositories/user_repository.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/routes/routes.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/init.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user_service.go" beforeDir="false" />
-    </list>
+    <list default="true" id="2d7070a4-271b-4173-9dc4-5e51e31dd180" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
