@@ -159,6 +159,12 @@ func (s *service) CreateNewChat(ctx context.Context, chatID uuid.UUID, req *mode
 	if err := s.repo.SaveMessage(ctx, response); err != nil {
 		return nil, errors.New("save response message failed: " + err.Error())
 	}
+	for i, m := range chat.Messages {
+		if m.Role == "system" {
+			chat.Messages = append(chat.Messages[:i], chat.Messages[i+1:]...)
+			break
+		}
+	}
 	return chat, nil
 }
 
@@ -166,6 +172,12 @@ func (s *service) GetChatByID(ctx context.Context, chatID uuid.UUID) (*models.Ch
 	ch, err := s.repo.GetChatAndMessages(ctx, chatID)
 	if err != nil {
 		return nil, err
+	}
+	for i, m := range ch.Messages {
+		if m.Role == "system" {
+			ch.Messages = append(ch.Messages[:i], ch.Messages[i+1:]...)
+			break
+		}
 	}
 
 	return ch, nil

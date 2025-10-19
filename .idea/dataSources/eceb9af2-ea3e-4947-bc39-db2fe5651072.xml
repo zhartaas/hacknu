@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.51">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>1279</IntrospectionStateNumber>
+      <IntrospectionStateNumber>3210</IntrospectionStateNumber>
       <ServerVersion>17.6</ServerVersion>
       <StartupTime>1760793232</StartupTime>
       <TimeZones>true ACDT
@@ -1401,7 +1401,7 @@ true posixrules
 13219||10|C|G
 13219||-9223372036854775808|U|G
 13219||10|U|G</Grants>
-      <IntrospectionStateNumber>1279</IntrospectionStateNumber>
+      <IntrospectionStateNumber>3210</IntrospectionStateNumber>
       <ObjectId>16389</ObjectId>
       <OwnerName>postgres_hacknu</OwnerName>
     </database>
@@ -4844,8 +4844,8 @@ true posixrules
     <schema id="268" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>1279</IntrospectionStateNumber>
-      <LastIntrospectionLocalTimestamp>2025-10-18.17:29:24</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>3210</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2025-10-19.08:32:51</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>745</StateNumber>
       <OwnerName>postgres_hacknu</OwnerName>
@@ -4858,13 +4858,13 @@ true posixrules
     </table>
     <table id="270" parent="268" name="chats">
       <ObjectId>16428</ObjectId>
-      <StateNumber>1277</StateNumber>
+      <StateNumber>3208</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres_hacknu</OwnerName>
     </table>
     <table id="271" parent="268" name="messages">
       <ObjectId>16437</ObjectId>
-      <StateNumber>1277</StateNumber>
+      <StateNumber>3208</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres_hacknu</OwnerName>
     </table>
@@ -4940,7 +4940,7 @@ true posixrules
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16435</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>1235</StateNumber>
+      <StateNumber>3208</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
@@ -5002,7 +5002,7 @@ true posixrules
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>16444</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>1277</StateNumber>
+      <StateNumber>3208</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
