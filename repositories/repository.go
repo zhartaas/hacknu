@@ -11,6 +11,7 @@ import (
 type Repository interface {
 	GetChatAndMessages(ctx context.Context, id uuid.UUID) (*models.Chat, error)
 	SaveMessage(ctx context.Context, message *models.Message) error
+	CreateNewChat(ctx context.Context, uuid uuid.UUID, chatName string) error
 }
 
 type repository struct {
@@ -19,6 +20,17 @@ type repository struct {
 
 func NewRepository(db *database.DB) Repository {
 	return &repository{db: db}
+}
+
+func (r *repository) CreateNewChat(ctx context.Context, uuid uuid.UUID, chatName string) error {
+	query := `INSERT INTO chats (id, title, model) VALUES
+	($1, $2, $3);`
+	_, err := r.db.Pool.Exec(ctx, query, uuid, chatName, models.LLMModel)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *repository) SaveMessage(ctx context.Context, message *models.Message) error {

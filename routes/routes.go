@@ -30,5 +30,6 @@ func SetupRoutes(e *echo.Echo, service services.Service) {
 
 	v1.GET("/get-chat/:id", handler.GetChatByID)
 	v1.POST("/llm-prompt/:id", handler.LLMChat)
+	v1.POST("/start", handler.StartNewChat)
 
 }

@@ -17,6 +17,8 @@ import (
 type Service interface {
 	GetChatByID(ctx context.Context, chatID uuid.UUID) (*models.Chat, error)
 	LLMRequestAndSave(ctx context.Context, message *models.Message, fullChat *models.Chat) (*models.Message, error)
+	CreateNewChat(ctx context.Context, chatID uuid.UUID, req *models.Message) (*models.Chat, error)
+	LLMRequest(ctx context.Context, requestMessage *models.Message, fullChat *models.Chat) (*models.Message, error)
 }
 
 func NewService(repo repositories.Repository) Service {
@@ -29,17 +31,12 @@ type service struct {
 	repo repositories.Repository
 }
 
-func (s *service) LLMRequestAndSave(ctx context.Context, requestMessage *models.Message, fullChat *models.Chat) (*models.Message, error) {
-	if err := s.repo.SaveMessage(ctx, requestMessage); err != nil {
-		return nil, err
-	}
-
+func (s *service) LLMRequest(ctx context.Context, requestMessage *models.Message, fullChat *models.Chat) (*models.Message, error) {
 	llmURL := "https://openai-hub.neuraldeep.tech/v1/chat/completions"
-	standartModel := "gpt-4o-mini"
 	api_key := "sk-roG3OusRr0TLCHAADks6lw"
 
 	req := models.LLMAPIRequest{
-		Model: standartModel,
+		Model: models.LLMModel,
 	}
 	messages := []models.MessagesAPI{}
 	for _, m := range fullChat.Messages {
@@ -107,12 +104,57 @@ func (s *service) LLMRequestAndSave(ctx context.Context, requestMessage *models.
 	}
 
 	responseMessage := &llmResponse.Choices[0].Message
+	return responseMessage, nil
+}
+
+func (s *service) LLMRequestAndSave(ctx context.Context, requestMessage *models.Message, fullChat *models.Chat) (*models.Message, error) {
+	if err := s.repo.SaveMessage(ctx, requestMessage); err != nil {
+		return nil, err
+	}
+	responseMessage, err := s.LLMRequest(ctx, requestMessage, fullChat)
+	if err != nil {
+		return nil, err
+	}
 	responseMessage.ChatID = fullChat.ID
 	if err := s.repo.SaveMessage(ctx, responseMessage); err != nil {
 		return nil, err
 	}
 	fmt.Println("resp", responseMessage)
 	return responseMessage, nil
+}
+
+func (s *service) CreateNewChat(ctx context.Context, chatID uuid.UUID, req *models.Message) (*models.Chat, error) {
+	systemMessage := &models.Message{ChatID: chatID, Role: "system", Content: models.BasePrompt}
+	chat := &models.Chat{ID: chatID, Messages: []models.Message{*systemMessage}}
+	response, err := s.LLMRequest(ctx, req, chat)
+	if err != nil {
+		return nil, err
+	}
+	createNamePrompt := "Generate a short and concise title for a chat based on the user prompt. The title should be no more than 5 words"
+	chatNameMessage, err := s.LLMRequest(ctx, &models.Message{ChatID: chatID, Role: "user", Content: createNamePrompt}, chat)
+	if err != nil {
+		return nil, errors.New("llmreq for chat name failed: " + err.Error())
+	}
+
+	err = s.repo.CreateNewChat(ctx, chatID, chatNameMessage.Content)
+	if err != nil {
+		return nil, errors.New("create new chat in repo failed: " + err.Error())
+	}
+
+	if err := s.repo.SaveMessage(ctx, systemMessage); err != nil {
+		return nil, errors.New("save system message failed: " + err.Error())
+	}
+	response.ChatID = chatID
+	if err := s.repo.SaveMessage(ctx, response); err != nil {
+		return nil, errors.New("save response message failed: " + err.Error())
+	}
+
+	allMessages := chat.Messages
+	allMessages = append(allMessages, *response)
+
+	chat.Messages = allMessages
+
+	return chat, nil
 }
 
 func (s *service) GetChatByID(ctx context.Context, chatID uuid.UUID) (*models.Chat, error) {

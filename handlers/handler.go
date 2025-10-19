@@ -26,6 +26,35 @@ type Response struct {
 	Error   string      `json:"error,omitempty"`
 }
 
+func (h *Handler) StartNewChat(c echo.Context) error {
+	chatID := uuid.New()
+
+	var req *models.LLMChatRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, Response{
+			Success: false,
+			Error:   "invalid JSON body",
+		})
+	}
+
+	userMessage := &models.Message{
+		ChatID:  chatID,
+		Role:    "user",
+		Content: req.Content,
+	}
+	chat, err := h.service.CreateNewChat(c.Request().Context(), chatID, userMessage)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]any{
+			"success": false, "error": err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, Response{
+		Success: true,
+		Data:    chat,
+	})
+}
+
 func (h *Handler) LLMChat(c echo.Context) error {
 	chatIDStr := c.Param("id")
 	chatID, err := uuid.Parse(chatIDStr)
