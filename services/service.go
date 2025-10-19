@@ -130,6 +130,13 @@ func (s *service) CreateNewChat(ctx context.Context, chatID uuid.UUID, req *mode
 	if err != nil {
 		return nil, err
 	}
+
+	allMessages := chat.Messages
+	allMessages = append(allMessages, *req)
+	allMessages = append(allMessages, *response)
+
+	chat.Messages = allMessages
+
 	createNamePrompt := "Generate a short and concise title for a chat based on the user prompt. The title should be no more than 5 words"
 	chatNameMessage, err := s.LLMRequest(ctx, &models.Message{ChatID: chatID, Role: "user", Content: createNamePrompt}, chat)
 	if err != nil {
@@ -144,16 +151,13 @@ func (s *service) CreateNewChat(ctx context.Context, chatID uuid.UUID, req *mode
 	if err := s.repo.SaveMessage(ctx, systemMessage); err != nil {
 		return nil, errors.New("save system message failed: " + err.Error())
 	}
+	if err := s.repo.SaveMessage(ctx, req); err != nil {
+		return nil, errors.New("save req message failed: " + err.Error())
+	}
 	response.ChatID = chatID
 	if err := s.repo.SaveMessage(ctx, response); err != nil {
 		return nil, errors.New("save response message failed: " + err.Error())
 	}
-
-	allMessages := chat.Messages
-	allMessages = append(allMessages, *response)
-
-	chat.Messages = allMessages
-
 	return chat, nil
 }
 
