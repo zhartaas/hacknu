@@ -155,6 +155,7 @@ func (s *service) CreateNewChat(ctx context.Context, chatID uuid.UUID, req *mode
 		return nil, errors.New("save req message failed: " + err.Error())
 	}
 	response.ChatID = chatID
+	chat.Title = chatNameMessage.Content
 	if err := s.repo.SaveMessage(ctx, response); err != nil {
 		return nil, errors.New("save response message failed: " + err.Error())
 	}
